@@ -18,6 +18,7 @@ namespace Tutor.Controllers
             return View();
         }
 
+
         public IActionResult Privacy()
         {
             return View();
