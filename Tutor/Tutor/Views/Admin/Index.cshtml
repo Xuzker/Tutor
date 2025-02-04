@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Админ-панель";
+}
+
+<div class="container">
+    <h1 class="mb-4">Админ-панель</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Управление курсами</div>
+                <div class="card-body">
+                    <a href="/Admin/Courses" class="btn btn-primary">Редактировать курсы</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Заявки</div>
+                <div class="card-body">
+                    <a href="/Admin/Requests" class="btn btn-warning">Просмотр заявок</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">Пользователи</div>
+                <div class="card-body">
+                    <a href="/Admin/Users" class="btn btn-danger">Управление пользователями</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tutor.Models;
 
@@ -13,6 +14,12 @@ namespace Tutor.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
+        }
+
+        [Authorize]
+        public IActionResult Profile()
+        {
+            return View();
         }
 
         public IActionResult Register()
@@ -67,6 +74,30 @@ namespace Tutor.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateProfile(UpdateProfileViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View("Profile", model);
+
+            var user = _userManager.GetUserAsync(User).Result;
+            if (user == null)
+                return NotFound();
+
+            user.Email = model.Email;
+            user.PhoneNumber = model.Phone;
+            if (!string.IsNullOrEmpty(model.Password))
+            {
+                var token = _userManager.GeneratePasswordResetTokenAsync(user).Result;
+                var result = _userManager.ResetPasswordAsync(user, token, model.Password).Result;
+                if (!result.Succeeded)
+                    return View("Profile", model);
+            }
+
+            _userManager.UpdateAsync(user).Wait();
+            return RedirectToAction("Profile");
         }
     }
 

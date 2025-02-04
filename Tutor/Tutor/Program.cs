@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Tutor.Data;
+using Tutor.Initialize;
 using Tutor.Models;
 
 namespace Tutor
@@ -46,6 +47,8 @@ namespace Tutor
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();
+
+            //InitializeAdmin.Initialize(app.Services).Wait();
 
             app.Run();
         }

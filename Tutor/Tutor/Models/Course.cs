@@ -21,6 +21,7 @@ namespace Tutor.Models
 
         [Required]
         public decimal Price { get; set; }
+        public string? ImagePath { get; set; }
 
         public ICollection<Application> Applications { get; set; } = new List<Application>();
     }

@@ -1,1 +1,77 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Главная";
+    var isAuthenticated = User.Identity.IsAuthenticated;
+}
+
+<div class="container text-center">
+    <h1 class="mb-4">Добро пожаловать в Tutor</h1>
+    <p class="lead">Запишитесь на курс и начните изучение программирования уже сегодня!</p>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="enroll-form p-4 rounded">
+                <form method="post" action="/Courses/Enroll">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Ваше имя</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="course" class="form-label">Выберите курс</label>
+                        <select class="form-select" id="course" name="course" required>
+                            <option value="">Выберите...</option>
+                            <option value="csharp">C#</option>
+                            <option value="python">Python</option>
+                            <option value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Записаться</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+                            
+<style>
+    .enroll-form {
+        background: url('/images/code-background.png') no-repeat center center;
+        background-size: cover;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        color: white;
+        backdrop-filter: blur(8px);
+    }
+
+    .enroll-form label {
+        font-weight: bold;
+        color: #f8f9fa;
+    }
+
+    .enroll-form .form-control, .enroll-form .form-select {
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 10px;
+    }
+
+    .enroll-form .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .enroll-form .btn-primary {
+        background: #007bff;
+        border-color: #007bff;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .enroll-form .btn-primary:hover {
+        background: #0056b3;
+        border-color: #004085;
+    }
+</style>

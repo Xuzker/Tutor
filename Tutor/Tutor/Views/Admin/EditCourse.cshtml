@@ -1,0 +1,43 @@
+﻿@model Course
+
+@{
+    ViewData["Title"] = "Редактировать курс";
+}
+
+<div class="container">
+    <h1 class="mb-4">Редактировать курс</h1>
+    <form method="post" action="/Admin/EditCourse" enctype="multipart/form-data">
+        <input type="hidden" name="Id" value="@Model.Id" />
+
+        <div class="mb-3">
+            <label for="name" class="form-label">Название курса</label>
+            <input type="text" class="form-control" id="name" name="Name" value="@Model.Name" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Описание</label>
+            <textarea class="form-control" id="description" name="Description" required>@Model.Description</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="startDate" class="form-label">Дата начала</label>
+            <input type="date" class="form-control" id="startDate" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" required>
+        </div>
+        <div class="mb-3">
+            <label for="durationWeeks" class="form-label">Продолжительность (в неделях)</label>
+            <input type="number" class="form-control" id="durationWeeks" name="DurationWeeks" value="@Model.DurationWeeks" required>
+        </div>
+        <div class="mb-3">
+            <label for="price" class="form-label">Цена</label>
+            <input type="number" step="0.01" class="form-control" id="price" name="Price" value="@Model.Price" required>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Изображение курса (необязательно)</label>
+            <input type="file" class="form-control" id="image" name="Image">
+            @if (!string.IsNullOrEmpty(Model.ImagePath))
+            {
+                <p>Текущее изображение:</p>
+                <img src="@Model.ImagePath" alt="Course Image" style="max-width: 200px;">
+            }
+        </div>
+        <button type="submit" class="btn btn-success">Сохранить изменения</button>
+    </form>
+</div>

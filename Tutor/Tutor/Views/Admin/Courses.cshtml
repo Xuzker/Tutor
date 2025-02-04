@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Tutor.Models.Course>
+
+<h2>Управление курсами</h2>
+<a href="@Url.Action("CreateCourse", "Admin")" class="btn btn-success">Добавить курс</a>
+
+<table class="table">
+    <tr>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Дата старта</th>
+        <th>Цена</th>
+        <th>Действия</th>
+    </tr>
+    @foreach (var course in Model)
+    {
+        <tr>
+            <td>@course.Name</td>
+            <td>@course.Description</td>
+            <td>@course.StartDate.ToShortDateString()</td>
+            <td>@course.Price ₽</td>
+            <td>
+                <a href="@Url.Action("EditCourse", "Admin", new { id = course.Id })" class="btn btn-warning">Редактировать</a>
+                <a href="@Url.Action("DeleteCourse", "Admin", new { id = course.Id })" class="btn btn-danger">Удалить</a>
+            </td>
+        </tr>
+    }
+</table>

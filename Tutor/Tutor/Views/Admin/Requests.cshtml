@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Tutor.Models.Application>
+
+<h2>Заявки на курсы</h2>
+
+<table class="table">
+    <tr>
+        <th>Курс</th>
+        <th>Пользователь</th>
+        <th>Дата заявки</th>
+        <th>Статус</th>
+        <th>Действия</th>
+    </tr>
+    @foreach (var application in Model)
+    {
+        <tr>
+            <td>@application.Course.Name</td>
+            <td>@application.User.FullName (@application.User.Email)</td>
+            <td>@application.ApplicationDate.ToShortDateString()</td>
+            <td>@application.Status</td>
+            <td>
+                <form asp-action="ApproveRequest" method="post">
+                    <input type="hidden" name="id" value="@application.Id" />
+                    <button type="submit" class="btn btn-success">Одобрить</button>
+                </form>
+                <form asp-action="RejectRequest" method="post">
+                    <input type="hidden" name="id" value="@application.Id" />
+                    <button type="submit" class="btn btn-danger">Отклонить</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

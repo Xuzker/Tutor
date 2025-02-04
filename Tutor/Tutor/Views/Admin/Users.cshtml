@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Tutor.Models.User>
+
+<h2>Список пользователей</h2>
+
+<table class="table">
+    <tr>
+        <th>ФИО</th>
+        <th>Email</th>
+        <th>Действия</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.FullName</td>
+            <td>@user.Email</td>
+            <td>
+                <form asp-action="BlockUser" method="post">
+                    <input type="hidden" name="id" value="@user.Id" />
+                    <button type="submit" class="btn btn-warning">Заблокировать</button>
+                </form>
+                <form asp-action="UnblockUser" method="post">
+                    <input type="hidden" name="id" value="@user.Id" />
+                    <button type="submit" class="btn btn-success">Разблокировать</button>
+                </form>
+                <form asp-action="DeleteUser" method="post">
+                    <input type="hidden" name="id" value="@user.Id" />
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>
