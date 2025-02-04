@@ -27,7 +27,16 @@
                     </ul>
                     @if (isAuthenticated)
                     {
-                        <a href="/Notifications" class="btn btn-warning me-2">Уведомления</a>
+                        <a class="nav-link position-relative" href="/Notifications/Index">
+                            🔔 Уведомления
+                            @if (ViewBag.UnreadCount != null && (int)ViewBag.UnreadCount > 0)
+                            {
+                                <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill">
+                                    @ViewBag.UnreadCount
+                                </span>
+                            }
+                        </a>
+
                         @if (isAdmin)
                         {
                             <a href="/Admin" class="btn btn-danger me-2">Админ-панель</a>

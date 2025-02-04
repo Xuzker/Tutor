@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using Tutor.Data;
 using Tutor.Models;
 
@@ -30,8 +31,11 @@ namespace Tutor.Controllers
         [HttpPost]
         public async Task<IActionResult> Enroll(long courseId)
         {
-            var userId = User.Identity.Name;
-            if (userId == null) return RedirectToAction("Login", "Account");
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
 
             var application = new Application
             {
@@ -42,8 +46,20 @@ namespace Tutor.Controllers
             };
 
             _context.Applications.Add(application);
+
+            var notification = new Notification
+            {
+                UserId = userId,
+                Message = $"Вы успешно записались на курс!",
+                CreatedAt = DateTime.UtcNow
+            };
+
+            _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+
+            TempData["SuccessMessage"] = "Заявка отправлена. Проверьте уведомления.";
+            return RedirectToAction("Index", "Notifications");
         }
+
     }
 }

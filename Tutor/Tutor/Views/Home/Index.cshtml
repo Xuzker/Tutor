@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ICollection<Tutor.Models.Course>
+@{
     ViewData["Title"] = "Главная";
     var isAuthenticated = User.Identity.IsAuthenticated;
 }
@@ -20,12 +21,13 @@
                         <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="course" class="form-label">Выберите курс</label>
-                        <select class="form-select" id="course" name="course" required>
+                        <label for="course" class="form-label">Выберите курс</label>                        
+                        <select class="form-select" id="course" name="courseId" required>
                             <option value="">Выберите...</option>
-                            <option value="csharp">C#</option>
-                            <option value="python">Python</option>
-                            <option value="javascript">JavaScript</option>
+                            @foreach (var course in Model)
+                            {
+                                <option value="@course.Id">@course.Name</option>
+                            }
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Записаться</button>

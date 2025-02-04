@@ -12,6 +12,8 @@ namespace Tutor.Data
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<Application> Applications { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,9 +22,17 @@ namespace Tutor.Data
             // Настройка связи Application с User
             modelBuilder.Entity<Application>()
                 .HasOne(a => a.User)
-                .WithMany()
+                .WithMany(u => u.Applications)
                 .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Настройка связи Application с Course
+            modelBuilder.Entity<Application>()
+                .HasOne(a => a.Course)
+                .WithMany(c => c.Applications)
+                .HasForeignKey(a => a.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
+
     }
 }
