@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Tutor.Data;
 using Tutor.Initialize;
 using Tutor.Models;
+using Tutor.Email;
 
 namespace Tutor
 {
@@ -24,6 +26,9 @@ namespace Tutor
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+            builder.Services.AddTransient<Tutor.Email.IEmailSender, EmailSender>();
 
             var app = builder.Build();
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Tutor.Data;
+using Tutor.Email;
 using Tutor.Models;
 
 namespace Tutor.Controllers
@@ -12,12 +13,15 @@ namespace Tutor.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public AdminController(ApplicationDbContext context, UserManager<User> userManager)
+        public AdminController(ApplicationDbContext context, UserManager<User> userManager, IEmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
+            _emailSender = emailSender;
         }
+
 
         // Главная страница админки
         public IActionResult Index()
@@ -90,6 +94,7 @@ namespace Tutor.Controllers
             var applications = await _context.Applications
                 .Include(a => a.User)
                 .Include(a => a.Course)
+                .Where(a => a.Status == "Pending")
                 .ToListAsync();
 
             return View(applications);
@@ -98,13 +103,25 @@ namespace Tutor.Controllers
         [HttpPost]
         public async Task<IActionResult> ApproveRequest(long id)
         {
-            var application = await _context.Applications.FindAsync(id);
+            var application = await _context.Applications
+                .Include(a => a.User)
+                .Include(a => a.Course)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
             if (application == null) return NotFound();
 
             application.Status = "Approved";
             await _context.SaveChangesAsync();
+
+            // Отправка email пользователю
+            var subject = "Заявка на курс одобрена";
+            var message = $"Здравствуйте, {application.User.FullName}! Ваша заявка на курс \"{application.Course.Name}\" была одобрена. Скоро с вами свяжется преподаватель.";
+
+            await _emailSender.SendEmailAsync(application.User.Email, subject, message);
+
             return RedirectToAction(nameof(Requests));
         }
+
 
         [HttpPost]
         public async Task<IActionResult> RejectRequest(long id)
