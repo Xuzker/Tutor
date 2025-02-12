@@ -24,6 +24,11 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\js\Home\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\Home\Index.css" />
   </ItemGroup>
 
 </Project>

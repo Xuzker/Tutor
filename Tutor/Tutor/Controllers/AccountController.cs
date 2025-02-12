@@ -32,7 +32,7 @@ namespace Tutor.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User { UserName = model.Email, FullName = model.FullName };
+                var user = new User { UserName = model.Email, FullName = model.FullName, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)

@@ -6,6 +6,7 @@ using Tutor.Data;
 using Tutor.Initialize;
 using Tutor.Models;
 using Tutor.Email;
+using Tutor.VisitService;
 
 namespace Tutor
 {
@@ -24,6 +25,8 @@ namespace Tutor
 
             builder.Services.AddRazorPages();
 
+            builder.Services.AddScoped<VisitLogService>();
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
@@ -31,6 +34,22 @@ namespace Tutor
             builder.Services.AddTransient<Tutor.Email.IEmailSender, EmailSender>();
 
             var app = builder.Build();
+
+            app.Use(async (context, next) =>
+            {
+                using (var scope = app.Services.CreateScope())
+                {
+                    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    var visit = new VisitLog
+                    {
+                        VisitDate = DateTime.UtcNow,
+                        IpAddress = context.Connection.RemoteIpAddress?.ToString() ?? "Unknown"
+                    };
+                    dbContext.VisitLogs.Add(visit);
+                    await dbContext.SaveChangesAsync();
+                }
+                await next();
+            });
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

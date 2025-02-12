@@ -1,0 +1,43 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Visit Log Stats";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <canvas id="visitChart"></canvas>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('visitChart').getContext('2d');
+        var chartData = {
+            labels: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(m => m.Date.ToString("yyyy-MM-dd")))),
+            datasets: [{
+                label: 'Visits',
+                data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Select(m => m.Count))),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true
+            }]
+        };
+
+        var visitChart = new Chart(ctx, {
+            type: 'line',
+            data: chartData,
+            options: {
+                scales: {
+                    x: {
+                        type: 'category',
+                        labels: chartData.labels
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            });
+    </script>
+}

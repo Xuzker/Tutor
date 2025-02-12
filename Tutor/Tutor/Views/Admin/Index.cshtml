@@ -1,33 +1,99 @@
-﻿@{
+﻿@model AdminViewModel
+@{
     ViewData["Title"] = "Админ-панель";
 }
 
 <div class="container">
     <h1 class="mb-4">Админ-панель</h1>
     <div class="row">
+        <!-- Управление курсами -->
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">Управление курсами</div>
                 <div class="card-body">
-                    <a href="/Admin/Courses" class="btn btn-primary">Редактировать курсы</a>
+                    <a asp-controller="Admin" asp-action="Courses" class="btn btn-primary">Редактировать курсы</a>
                 </div>
             </div>
         </div>
+
+        <!-- Заявки -->
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">Заявки</div>
                 <div class="card-body">
-                    <a href="/Admin/Requests" class="btn btn-warning">Просмотр заявок</a>
+                    <a asp-controller="Admin" asp-action="Requests" class="btn btn-warning">Просмотр заявок</a>
                 </div>
             </div>
         </div>
+
+        <!-- Пользователи -->
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">Пользователи</div>
                 <div class="card-body">
-                    <a href="/Admin/Users" class="btn btn-danger">Управление пользователями</a>
+                    <a asp-controller="Admin" asp-action="Users" class="btn btn-danger">Управление пользователями</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- График нагрузки -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">График нагрузки</div>
+                <div class="card-body">
+                    <button class="btn btn-secondary" onclick="loadTrafficData('week')">Последняя неделя</button>
+                    <button class="btn btn-secondary" onclick="loadTrafficData('month')">Последний месяц</button>
+                    <button class="btn btn-secondary" onclick="loadTrafficData('year')">Последний год</button>
+
+                    <canvas id="trafficChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var trafficChart;
+
+    function loadTrafficData(period) {
+        fetch(`/Admin/ViewTraffic?period=${period}`)
+            .then(response => response.json())
+            .then(data => {
+                updateChart(data.labels, data.counts);
+            })
+            .catch(error => console.error("Ошибка загрузки данных:", error));
+    }
+
+    function updateChart(labels, counts) {
+        if (trafficChart) {
+            trafficChart.destroy();
+        }
+
+        var ctx = document.getElementById("trafficChart").getContext("2d");
+        trafficChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Посещения",
+                    data: counts,
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    }
+
+    // Загружаем данные за неделю при загрузке страницы
+    loadTrafficData("week");
+</script>

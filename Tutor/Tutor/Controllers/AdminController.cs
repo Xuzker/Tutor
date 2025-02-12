@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Tutor.Data;
 using Tutor.Email;
 using Tutor.Models;
+using Tutor.VisitService;
 
 namespace Tutor.Controllers
 {
@@ -14,12 +15,13 @@ namespace Tutor.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
-
-        public AdminController(ApplicationDbContext context, UserManager<User> userManager, IEmailSender emailSender)
+        private readonly VisitLogService _visitLogService;
+        public AdminController(ApplicationDbContext context, UserManager<User> userManager, IEmailSender emailSender, VisitLogService visitLogService)
         {
             _context = context;
             _userManager = userManager;
             _emailSender = emailSender;
+            _visitLogService = visitLogService;
         }
 
 
@@ -36,6 +38,41 @@ namespace Tutor.Controllers
             var courses = await _context.Courses.ToListAsync();
             return View(courses);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ViewTraffic(string period = "week")
+        {
+            List<VisitLog> visitLogs;
+
+            switch (period.ToLower())
+            {
+                case "month":
+                    visitLogs = await _visitLogService.GetVisitsForLastMonthAsync();
+                    break;
+                case "year":
+                    visitLogs = await _visitLogService.GetVisitsForLastYearAsync();
+                    break;
+                case "week":
+                default:
+                    visitLogs = await _visitLogService.GetVisitsForLastWeekAsync();
+                    break;
+            }
+
+            visitLogs = visitLogs ?? new List<VisitLog>();
+
+            var visitsByDay = visitLogs
+                .GroupBy(v => v.VisitDate.Date)
+                .Select(g => new { Date = g.Key, Count = g.Count() })
+                .OrderBy(v => v.Date)
+                .ToList();
+
+            return Json(new
+            {
+                labels = visitsByDay.Select(v => v.Date.ToString("dd.MM.yyyy")),
+                counts = visitsByDay.Select(v => v.Count)
+            });
+        }
+
 
         public IActionResult CreateCourse()
         {

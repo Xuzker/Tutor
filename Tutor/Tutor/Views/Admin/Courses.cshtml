@@ -15,7 +15,11 @@
     {
         <tr>
             <td>@course.Name</td>
-            <td>@course.Description</td>
+            <td>
+                @(course.Description.Split('\n')[0].Length > 15
+                    ? new string(course.Description.Split('\n')[0].Take(15).ToArray()) + "..."
+                    : course.Description.Split('\n')[0])
+            </td>
             <td>@course.StartDate.ToShortDateString()</td>
             <td>@course.Price ₽</td>
             <td>
