@@ -1,6 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace Tutor.Models
 {
+    public enum Category
+    {
+        Backend,
+        Frontend,
+        Mobile
+    }
     public class Course
     {
         [Key]
@@ -18,6 +24,9 @@ namespace Tutor.Models
 
         [Required]
         public int DurationWeeks { get; set; }
+
+        [Required]
+        public Category Category { get; set; }
 
         [Required]
         public decimal Price { get; set; }

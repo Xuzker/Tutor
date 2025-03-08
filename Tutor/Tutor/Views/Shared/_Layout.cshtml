@@ -2,69 +2,58 @@
     var isAuthenticated = User.Identity.IsAuthenticated;
     var isAdmin = User.IsInRole("Admin");
 }
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewData["Title"] - Tutor</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="d-flex flex-column min-vh-100">
-        <header class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="/">Tutor</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="/Courses">Курсы</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/About">О нас</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/Contact">Контакты</a></li>
-                    </ul>
-                    @if (isAuthenticated)
-                    {
-                        <a class="nav-link position-relative" href="/Notifications/Index">
-                            🔔 Уведомления
-                            @if (ViewBag.UnreadCount != null && (int)ViewBag.UnreadCount > 0)
-                            {
-                                <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill">
-                                    @ViewBag.UnreadCount
-                                </span>
-                            }
-                        </a>
-
-                        @if (isAdmin)
+<body class="flex flex-col min-h-screen bg-gray-100">
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="text-2xl font-bold text-gray-800">Tutor</a>
+            <nav class="absolute left-1/2 transform -translate-x-1/2 space-x-4">
+                <a href="/Courses" class="text-gray-700 hover:text-blue-600">Курсы</a>
+                <a href="/About" class="text-gray-700 hover:text-blue-600">О нас</a>
+                <a href="/Contact" class="text-gray-700 hover:text-blue-600">Контакты</a>
+            </nav>
+            <div>
+                @if (isAuthenticated)
+                {
+                    <a href="/Notifications/Index" class="relative text-gray-700 hover:text-blue-600">
+                        🔔 Уведомления
+                        @if (ViewBag.UnreadCount != null && (int)ViewBag.UnreadCount > 0)
                         {
-                            <a href="/Admin" class="btn btn-danger me-2">Админ-панель</a>
+                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                @ViewBag.UnreadCount
+                            </span>
                         }
-                        <a href="/Account/Profile" class="btn btn-outline-primary">Профиль</a>
-                    }
-                    else
+                    </a>
+                    @if (isAdmin)
                     {
-                        <a href="/Account/Login" class="btn btn-outline-primary me-2">Вход</a>
-                        <a href="/Account/Register" class="btn btn-primary">Регистрация</a>
+                        <a href="/Admin" class="ml-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">Админ-панель</a>
                     }
-                </div>
+                    <a href="/Account/Profile" class="ml-4 px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-500 hover:text-white">Профиль</a>
+                }
+                else
+                {
+                    <a href="/Account/Login" class="ml-4 px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-500 hover:text-white">Вход</a>
+                    <a href="/Account/Register" class="ml-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">Регистрация</a>
+                }
             </div>
-        </header>
+        </div>
+    </header>
 
-        <main class="container mt-4 flex-grow-1">
-            @RenderBody()
-        </main>
+    <main class="flex-grow container mx-auto px-4 py-8">
+        @RenderBody()
+    </main>
 
-        <footer class="bg-dark text-light text-center py-3 mt-4">
-            <div class="container">
-                <p>&copy; @DateTime.Now.Year Tutor. Все права защищены.</p>
-            </div>
-        </footer>
-    </div>
+    <footer class="bg-gray-900 text-white text-center py-4">
+        <p>&copy; @DateTime.Now.Year Tutor. Все права защищены.</p>
+    </footer>
+
     @RenderSection("Scripts", required: false)
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

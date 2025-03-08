@@ -1,31 +1,44 @@
 ﻿@model IEnumerable<Tutor.Models.Course>
 
-<h2>Управление курсами</h2>
-<a href="@Url.Action("CreateCourse", "Admin")" class="btn btn-success">Добавить курс</a>
+<div class="min-h-screen bg-gray-100 py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-4xl">
+        <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-8">Управление курсами</h2>
 
-<table class="table">
-    <tr>
-        <th>Название</th>
-        <th>Описание</th>
-        <th>Дата старта</th>
-        <th>Цена</th>
-        <th>Действия</th>
-    </tr>
-    @foreach (var course in Model)
-    {
-        <tr>
-            <td>@course.Name</td>
-            <td>
-                @(course.Description.Split('\n')[0].Length > 15
-                    ? new string(course.Description.Split('\n')[0].Take(15).ToArray()) + "..."
-                    : course.Description.Split('\n')[0])
-            </td>
-            <td>@course.StartDate.ToShortDateString()</td>
-            <td>@course.Price ₽</td>
-            <td>
-                <a href="@Url.Action("EditCourse", "Admin", new { id = course.Id })" class="btn btn-warning">Редактировать</a>
-                <a href="@Url.Action("DeleteCourse", "Admin", new { id = course.Id })" class="btn btn-danger">Удалить</a>
-            </td>
-        </tr>
-    }
-</table>
+        <a href="@Url.Action("CreateCourse", "Admin")" class="inline-block bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition mb-6">
+            Добавить курс
+        </a>
+
+        <div class="overflow-hidden bg-white shadow-lg rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Название</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Описание</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата старта</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Цена</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach (var course in Model)
+                    {
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">@course.Name</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                @(course.Description.Split('\n')[0].Length > 15
+                                    ? new string(course.Description.Split('\n')[0].Take(15).ToArray()) + "..."
+                                    : course.Description.Split('\n')[0])
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">@course.StartDate.ToShortDateString()</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">@course.Price ₽</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="@Url.Action("EditCourse", "Admin", new { id = course.Id })" class="inline-block bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 transition">Редактировать</a>
+                                <a href="@Url.Action("DeleteCourse", "Admin", new { id = course.Id })" class="inline-block bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition ml-2">Удалить</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -15,11 +15,37 @@ namespace Tutor.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+
+
+        public async Task<IActionResult> Index(string category = "Все", decimal? maxPrice = null, DateTime? startDate = null)
         {
-            var courses = await _context.Courses.ToListAsync();
+            var coursesQuery = _context.Courses.AsQueryable();
+
+
+            if (category != "Все")
+            {
+                coursesQuery = coursesQuery.Where(c => c.Category.ToString() == category);
+            }
+
+
+            if (maxPrice.HasValue)
+            {
+                coursesQuery = coursesQuery.Where(c => c.Price <= maxPrice.Value);
+            }
+
+            if (startDate.HasValue)
+            {
+                coursesQuery = coursesQuery.Where(c => c.StartDate >= startDate.Value);
+            }
+
+            var courses = await coursesQuery.ToListAsync();
+
+            ViewData["Categories"] = Enum.GetValues(typeof(Category)).Cast<Category>().ToList();
+
             return View(courses);
         }
+    
+
 
         public async Task<IActionResult> Details(long id)
         {
@@ -50,7 +76,7 @@ namespace Tutor.Controllers
             var notification = new Notification
             {
                 UserId = userId,
-                Message = $"Вы успешно записались на курс!",
+                Message = $"Вы успешно записались на курс '{(await _context.Courses.FindAsync(courseId))?.Name}'!",
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -60,6 +86,7 @@ namespace Tutor.Controllers
             TempData["SuccessMessage"] = "Заявка отправлена. Проверьте уведомления.";
             return RedirectToAction("Index", "Notifications");
         }
+
 
     }
 }

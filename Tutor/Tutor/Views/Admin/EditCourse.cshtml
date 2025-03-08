@@ -1,43 +1,48 @@
 ﻿@model Course
 
-@{
-    ViewData["Title"] = "Редактировать курс";
-}
+<div class="min-h-screen bg-gray-100 py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-4xl">
+        <h1 class="text-3xl font-extrabold text-gray-900 text-center mb-6">Редактировать курс</h1>
 
-<div class="container">
-    <h1 class="mb-4">Редактировать курс</h1>
-    <form method="post" action="/Admin/EditCourse" enctype="multipart/form-data">
-        <input type="hidden" name="Id" value="@Model.Id" />
+        <form method="post" action="/Admin/EditCourse" enctype="multipart/form-data" class="space-y-6">
+            <input type="hidden" name="Id" value="@Model.Id" />
 
-        <div class="mb-3">
-            <label for="name" class="form-label">Название курса</label>
-            <input type="text" class="form-control" id="name" name="Name" value="@Model.Name" required>
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Описание</label>
-            <textarea class="form-control" id="description" name="Description" required>@Model.Description</textarea>
-        </div>
-        <div class="mb-3">
-            <label for="startDate" class="form-label">Дата начала</label>
-            <input type="date" class="form-control" id="startDate" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" required>
-        </div>
-        <div class="mb-3">
-            <label for="durationWeeks" class="form-label">Продолжительность (в неделях)</label>
-            <input type="number" class="form-control" id="durationWeeks" name="DurationWeeks" value="@Model.DurationWeeks" required>
-        </div>
-        <div class="mb-3">
-            <label for="price" class="form-label">Цена</label>
-            <input type="number" step="0.01" class="form-control" id="price" name="Price" value="@Model.Price" required>
-        </div>
-        <div class="mb-3">
-            <label for="image" class="form-label">Изображение курса (необязательно)</label>
-            <input type="file" class="form-control" id="image" name="Image">
-            @if (!string.IsNullOrEmpty(Model.ImagePath))
-            {
-                <p>Текущее изображение:</p>
-                <img src="@Model.ImagePath" alt="Course Image" style="max-width: 200px;">
-            }
-        </div>
-        <button type="submit" class="btn btn-success">Сохранить изменения</button>
-    </form>
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Название курса</label>
+                <input type="text" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="name" name="Name" value="@Model.Name" required>
+            </div>
+
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700">Описание</label>
+                <textarea class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="description" name="Description" required>@Model.Description</textarea>
+            </div>
+
+            <div>
+                <label for="startDate" class="block text-sm font-medium text-gray-700">Дата начала</label>
+                <input type="date" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="startDate" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" required>
+            </div>
+
+            <div>
+                <label for="durationWeeks" class="block text-sm font-medium text-gray-700">Продолжительность (в неделях)</label>
+                <input type="number" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="durationWeeks" name="DurationWeeks" value="@Model.DurationWeeks" required>
+            </div>
+
+            <div>
+                <label for="price" class="block text-sm font-medium text-gray-700">Цена</label>
+                <input type="number" step="0.01" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="price" name="Price" value="@Model.Price" required>
+            </div>
+
+            <div>
+                <label for="image" class="block text-sm font-medium text-gray-700">Изображение курса (необязательно)</label>
+                <input type="file" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" id="image" name="Image">
+                @if (!string.IsNullOrEmpty(Model.ImagePath))
+                {
+                    <p class="mt-2 text-sm text-gray-500">Текущее изображение:</p>
+                    <img src="@Model.ImagePath" alt="Course Image" class="max-w-xs mt-2">
+                }
+            </div>
+
+            <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition">Сохранить изменения</button>
+        </form>
+    </div>
 </div>

@@ -2,26 +2,61 @@
     ViewData["Title"] = "Профиль";
 }
 
-<div class="container">
-    <h1 class="mb-4">Ваш профиль</h1>
-    <form method="post" action="/Account/UpdateProfile">
-        <div class="mb-3">
-            <label for="name" class="form-label">Имя</label>
-            <input type="text" class="form-control" id="name" name="name" value="@User.Identity.Name" required>
+<div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h1 class="text-3xl font-extrabold text-gray-900 text-center mb-6">Ваш профиль</h1>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-6 shadow sm:rounded-lg sm:px-10">
+            <form method="post" action="/Account/UpdateProfile" class="space-y-6">
+
+                <!-- Поле для имени -->
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Имя</label>
+                    <div class="mt-1">
+                        <input type="text" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" id="name" name="name" value="@User.Identity.Name" required>
+                    </div>
+                </div>
+
+                <!-- Поле для email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <div class="mt-1">
+                        <input type="email" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" id="email" name="email" required>
+                    </div>
+                </div>
+
+                <!-- Поле для телефона -->
+                <div>
+                    <label for="phone" class="block text-sm font-medium text-gray-700">Телефон</label>
+                    <div class="mt-1">
+                        <input type="text" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" id="phone" name="phone" required>
+                    </div>
+                </div>
+
+                <!-- Поле для нового пароля -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Новый пароль</label>
+                    <div class="mt-1">
+                        <input type="password" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" id="password" name="password">
+                    </div>
+                </div>
+
+                <!-- Кнопка для сохранения изменений -->
+                <div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        Сохранить изменения
+                    </button>
+                </div>
+            </form>
+
+            <!-- Кнопка выхода -->
+            <div class="mt-6 text-center">
+                <a href="/Account/Logout" class="text-sm font-medium text-red-600 hover:text-red-500">
+                    Выход
+                </a>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label">Телефон</label>
-            <input type="text" class="form-control" id="phone" name="phone" required>
-        </div>
-        <div class="mb-3">
-            <label for="password" class="form-label">Новый пароль</label>
-            <input type="password" class="form-control" id="password" name="password">
-        </div>
-        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
-        <a href="/Account/Logout" class="btn btn-outline-danger">Выход</a>
-    </form>
+    </div>
 </div>

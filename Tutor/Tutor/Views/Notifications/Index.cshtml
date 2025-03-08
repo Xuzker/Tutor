@@ -4,24 +4,27 @@
     ViewData["Title"] = "Уведомления";
 }
 
-<div class="container">
-    <h2 class="mb-4">Уведомления</h2>
-    @if (!Model.Any())
-    {
-        <p>Нет новых уведомлений.</p>
-    }
-    else
-    {
-        <ul class="list-group">
-            @foreach (var notification in Model)
-            {
-                <li class="list-group-item @(notification.IsRead ? "text-muted" : "fw-bold")">
-                    <div class="d-flex justify-content-between">
-                        <span>@notification.Message</span>
-                        <small>@notification.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
-                    </div>
-                </li>
-            }
-        </ul>
-    }
+<div class="min-h-screen bg-gray-100 py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-4xl">
+        <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-8">Уведомления</h2>
+
+        @if (!Model.Any())
+        {
+            <p class="text-center text-gray-500">Нет новых уведомлений.</p>
+        }
+        else
+        {
+            <ul class="space-y-4">
+                @foreach (var notification in Model)
+                {
+                    <li class="bg-white rounded-lg shadow-md p-4 @((notification.IsRead ? "text-gray-500" : "text-gray-900 font-semibold"))">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm">@notification.Message</span>
+                            <small class="text-xs text-gray-500">@notification.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
 </div>

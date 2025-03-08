@@ -1,0 +1,30 @@
+﻿@model Tutor.Models.Course
+
+<div class="container mx-auto py-12 px-4 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">@Model.Name</h1>
+        <p class="text-lg text-gray-600 mb-8">
+            @Model.Description
+        </p>
+
+        @if (!string.IsNullOrEmpty(Model.ImagePath))
+        {
+            <img src="@Model.ImagePath" alt="@Model.Name" class="w-full h-96 object-cover rounded-md shadow-md mb-6">
+        }
+
+
+        <div class="flex justify-between text-gray-700 mb-6">
+            <span>Дата начала: @Model.StartDate.ToString("dd MMM yyyy")</span>
+            <span>Продолжительность: @Model.DurationWeeks недели</span>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <span class="text-xl font-semibold text-blue-600">@Model.Price руб.</span>
+
+            <form method="post" action="/Courses/Enroll">
+                <input type="hidden" name="courseId" value="@Model.Id" />
+                <button type="submit" class="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600">Записаться</button>
+            </form>
+        </div>
+    </div>
+</div>

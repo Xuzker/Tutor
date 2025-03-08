@@ -4,37 +4,84 @@
     ViewData["Title"] = "Регистрация";
 }
 
-
-<h2>@ViewData["Title"]</h2>
-
-<form asp-action="Register" method="post">
-    <div class="form-group">
-        <label asp-for="FullName" class="control-label"></label>
-        <input asp-for="FullName" class="form-control" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
+<div class="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Регистрация
+        </h2>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Email" class="control-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <form class="space-y-6" asp-action="Register" method="post">
 
-    <div class="form-group">
-        <label asp-for="Password" class="control-label"></label>
-        <input asp-for="Password" class="form-control" type="password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+                <!-- Поле для полного имени -->
+                <div>
+                    <label for="FullName" class="block text-sm font-medium text-gray-700">
+                        Полное имя
+                    </label>
+                    <div class="mt-1">
+                        <input asp-for="FullName" id="FullName" name="FullName" type="text" required
+                               class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                               placeholder="Введите ваше полное имя">
+                        <span asp-validation-for="FullName" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ConfirmPassword" class="control-label"></label>
-        <input asp-for="ConfirmPassword" class="form-control" type="password" />
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
+                <!-- Поле для email -->
+                <div>
+                    <label for="Email" class="block text-sm font-medium text-gray-700">
+                        Электронная почта
+                    </label>
+                    <div class="mt-1">
+                        <input asp-for="Email" id="Email" name="Email" type="email" required
+                               class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                               placeholder="Введите ваш email">
+                        <span asp-validation-for="Email" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Register</button>
-    </div>
-</form>
+                <!-- Поле для пароля -->
+                <div>
+                    <label for="Password" class="block text-sm font-medium text-gray-700">
+                        Пароль
+                    </label>
+                    <div class="mt-1">
+                        <input asp-for="Password" id="Password" name="Password" type="password" required
+                               class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                               placeholder="Введите пароль">
+                        <span asp-validation-for="Password" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
 
-<a href="@Url.Action("Login", "Account")">Есть аккаунт? Войти</a>
+                <!-- Поле для подтверждения пароля -->
+                <div>
+                    <label for="ConfirmPassword" class="block text-sm font-medium text-gray-700">
+                        Подтвердите пароль
+                    </label>
+                    <div class="mt-1">
+                        <input asp-for="ConfirmPassword" id="ConfirmPassword" name="ConfirmPassword" type="password" required
+                               class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                               placeholder="Подтвердите ваш пароль">
+                        <span asp-validation-for="ConfirmPassword" class="text-sm text-red-600"></span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="text-sm">
+                        <a href="@Url.Action("Login", "Account")" class="font-medium text-blue-600 hover:text-blue-500">
+                            Уже есть аккаунт? Войти
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit"
+                            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Зарегистрироваться
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
