@@ -17,36 +17,6 @@ namespace Tutor.Controllers
 
 
 
-        public async Task<IActionResult> Index(string category = "Все", decimal? maxPrice = null, DateTime? startDate = null)
-        {
-            var coursesQuery = _context.Courses.AsQueryable();
-
-
-            if (category != "Все")
-            {
-                coursesQuery = coursesQuery.Where(c => c.Category.ToString() == category);
-            }
-
-
-            if (maxPrice.HasValue)
-            {
-                coursesQuery = coursesQuery.Where(c => c.Price <= maxPrice.Value);
-            }
-
-            if (startDate.HasValue)
-            {
-                coursesQuery = coursesQuery.Where(c => c.StartDate >= startDate.Value);
-            }
-
-            var courses = await coursesQuery.ToListAsync();
-
-            ViewData["Categories"] = Enum.GetValues(typeof(Category)).Cast<Category>().ToList();
-
-            return View(courses);
-        }
-    
-
-
         public async Task<IActionResult> Details(long id)
         {
             var course = await _context.Courses.FindAsync(id);

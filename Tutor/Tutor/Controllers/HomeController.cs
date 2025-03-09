@@ -17,9 +17,32 @@ namespace Tutor.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string category = "Все", decimal? maxPrice = null, DateTime? startDate = null)
         {
-            return View(await _context.Courses.ToListAsync());
+            var coursesQuery = _context.Courses.AsQueryable();
+
+            if (!string.IsNullOrEmpty(category) && category != "Все")
+            {
+                if (Enum.TryParse(typeof(Category), category, out var parsedCategory))
+                {
+                    coursesQuery = coursesQuery.Where(c => (int)c.Category == (int)parsedCategory);
+                }
+            }
+
+            if (maxPrice.HasValue)
+            {
+                coursesQuery = coursesQuery.Where(c => c.Price <= maxPrice.Value);
+            }
+
+            if (startDate.HasValue)
+            {
+                coursesQuery = coursesQuery.Where(c => c.StartDate >= startDate.Value);
+            }
+
+            var courses = await coursesQuery.ToListAsync();
+
+            ViewData["Categories"] = Enum.GetValues(typeof(Category)).Cast<Category>().ToList();
+            return View(courses);
         }
 
 
