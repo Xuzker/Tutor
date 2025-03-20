@@ -7,6 +7,12 @@ using Tutor.Initialize;
 using Tutor.Models;
 using Tutor.Email;
 using Tutor.VisitService;
+using Org.BouncyCastle.Pqc.Crypto.Lms;
+
+//docker - compose down
+//docker system prune -a
+//docker-compose up --build
+
 
 namespace Tutor
 {

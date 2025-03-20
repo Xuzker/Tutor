@@ -1,0 +1,40 @@
+﻿services:
+  db:
+    image: postgres:16
+    container_name: tutor_db
+    restart: always
+    environment:
+      POSTGRES_DB: Tutor
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+    ports:
+      - "5432:5432"
+    volumes:
+      - tutor_db_data:/var/lib/postgresql/data
+    networks:
+      - tutor_network
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tutor_app
+    depends_on:
+      - db
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=Tutor;Username=postgres;Password=1
+    ports:
+      - "8080:8080"
+    networks:
+      - tutor_network
+
+networks:
+  tutor_network:
+
+volumes:
+  tutor_db_data:

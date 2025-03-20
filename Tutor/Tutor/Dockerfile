@@ -1,24 +1,27 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
+# Используем официальный образ ASP.NET Core для запуска приложения
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
+# Используем SDK образ для сборки приложения
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Tutor/Tutor.csproj", "Tutor/"]
-RUN dotnet restore "./Tutor/./Tutor.csproj"
-COPY . .
-WORKDIR "/src/Tutor"
-RUN dotnet build "./Tutor.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+# Копируем .csproj и восстанавливаем зависимости
+COPY ["Tutor.csproj", "./"]
+RUN dotnet restore "Tutor.csproj"
+
+# Копируем все файлы и собираем приложение
+COPY . .
+RUN dotnet build "Tutor.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Публикуем приложение
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Tutor.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Tutor.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+# Финальный образ для запуска
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
