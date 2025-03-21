@@ -15,7 +15,7 @@ namespace Tutor.Initialize
                 var userManager = scopedProvider.GetRequiredService<UserManager<User>>();
                 var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                string adminEmail = "vyacheslav.gvozdikov@yandex.ru";
+                string adminEmail = "vyacheslavgvozdikov@yandex.ru";
                 string adminPassword = "bPhJ%2WqQo9@";
 
                 if (!await roleManager.RoleExistsAsync("Admin"))

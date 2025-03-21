@@ -15,9 +15,9 @@
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="text-2xl font-bold text-gray-800">Tutor</a>
             <nav class="absolute left-1/2 transform -translate-x-1/2 space-x-4">
-                <a href="/Courses" class="text-gray-700 hover:text-blue-600">Курсы</a>
-                <a href="/About" class="text-gray-700 hover:text-blue-600">О нас</a>
-                <a href="/Contact" class="text-gray-700 hover:text-blue-600">Контакты</a>
+                <a asp-controller="Courses" asp-action="Index" class="text-gray-700 hover:text-blue-600">Курсы</a>
+                <a asp-controller="Home" asp-action="Privacy" class="text-gray-700 hover:text-blue-600">О нас</a>
+                <a asp-controller="Home" asp-action="Contact" class="text-gray-700 hover:text-blue-600">Контакты</a>
             </nav>
             <div>
                 @if (isAuthenticated)

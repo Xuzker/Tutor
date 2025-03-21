@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tutor.Models
 {
+    [Table("VisitLogs")]
     public class VisitLog
     {
         [Key]

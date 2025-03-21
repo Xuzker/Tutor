@@ -45,6 +45,10 @@ namespace Tutor.Controllers
             return View(courses);
         }
 
+        public IActionResult Contact()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
