@@ -6,6 +6,7 @@ using Tutor.Data;
 using Tutor.Email;
 using Tutor.Models;
 using Tutor.VisitService;
+using System.IO;
 
 namespace Tutor.Controllers
 {
@@ -80,10 +81,14 @@ namespace Tutor.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCourse(Course course)
+        public async Task<IActionResult> CreateCourse(Course course, IFormFile? image)
         {
             if (ModelState.IsValid)
             {
+                if(image != null && image.Length > 0)
+                {
+                    course.ImagePath = await SaveImageAsync(image);
+                }
                 course.StartDate = DateTime.SpecifyKind(course.StartDate, DateTimeKind.Utc);
                 _context.Courses.Add(course);
                 await _context.SaveChangesAsync();
@@ -101,17 +106,36 @@ namespace Tutor.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditCourse(Course course)
+        public async Task<IActionResult> EditCourse(long id, Course updatedCourse, IFormFile image)
         {
-            if (ModelState.IsValid)
-            {
+            var course = await _context.Courses.FindAsync(id);
+            if (course == null) return NotFound();
 
-                course.StartDate = DateTime.SpecifyKind(course.StartDate, DateTimeKind.Utc);
-                _context.Courses.Update(course);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Courses));
+            course.Name = updatedCourse.Name;
+            course.Description = updatedCourse.Description;
+            course.StartDate = DateTime.SpecifyKind(updatedCourse.StartDate, DateTimeKind.Utc);
+            course.DurationWeeks = updatedCourse.DurationWeeks;
+            course.Price = updatedCourse.Price;
+            course.Category = updatedCourse.Category;
+
+            if(image != null && image.Length > 0)
+            {
+                if(!string.IsNullOrEmpty(course.ImagePath))
+                {
+                    var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", 
+                        course.ImagePath.TrimStart('/'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+                course.ImagePath = await SaveImageAsync(image);
             }
-            return View(course);
+
+            _context.Courses.Update(course);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Courses));
         }
 
         public async Task<IActionResult> DeleteCourse(long id)
@@ -123,6 +147,26 @@ namespace Tutor.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Courses));
         }
+
+        private async Task<string> SaveImageAsync(IFormFile image)
+        {
+            if (image == null || image.Length == 0)
+                return null;
+
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+            Directory.CreateDirectory(uploadsFolder);
+
+            var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+            var newFilePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(newFilePath, FileMode.Create))
+            {
+                await image.CopyToAsync(fileStream);
+            }
+
+            return "/uploads/" + uniqueFileName;
+        }
+
 
         // =================== ЗАЯВКИ ===================
 

@@ -8,7 +8,7 @@
         <h1 class="text-3xl font-extrabold text-gray-900 text-center mb-8">@ViewData["Title"]</h1>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Управление курсами -->
+
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div class="px-4 py-3 bg-indigo-600 text-white">
                     <h3 class="font-semibold text-lg">Управление курсами</h3>
@@ -20,7 +20,6 @@
                 </div>
             </div>
 
-            <!-- Заявки -->
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div class="px-4 py-3 bg-yellow-600 text-white">
                     <h3 class="font-semibold text-lg">Заявки</h3>
@@ -32,7 +31,6 @@
                 </div>
             </div>
 
-            <!-- Пользователи -->
             <div class="bg-white shadow-lg rounded-lg overflow-hidden">
                 <div class="px-4 py-3 bg-red-600 text-white">
                     <h3 class="font-semibold text-lg">Пользователи</h3>
@@ -45,7 +43,6 @@
             </div>
         </div>
 
-        <!-- График нагрузки -->
         <div class="bg-white shadow-lg rounded-lg overflow-hidden mt-8">
             <div class="px-4 py-3 bg-gray-800 text-white">
                 <h3 class="font-semibold text-lg">График нагрузки</h3>
@@ -102,6 +99,5 @@
         });
     }
 
-    // Загружаем данные за неделю при загрузке страницы
     loadTrafficData("week");
 </script>

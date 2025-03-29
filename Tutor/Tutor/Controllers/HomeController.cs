@@ -36,7 +36,8 @@ namespace Tutor.Controllers
 
             if (startDate.HasValue)
             {
-                coursesQuery = coursesQuery.Where(c => c.StartDate >= startDate.Value);
+                var updateTime = DateTime.SpecifyKind(startDate.Value, DateTimeKind.Utc);
+                coursesQuery = coursesQuery.Where(c => c.StartDate >= updateTime.Date);
             }
 
             var courses = await coursesQuery.ToListAsync();
