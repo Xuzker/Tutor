@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Tutor.Data;
 using Tutor.Models;
 
 namespace Tutor.Controllers
@@ -9,18 +12,38 @@ namespace Tutor.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationDbContext _context;
+        
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         [Authorize]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            return View();
+            var userId = _userManager.GetUserId(User);
+
+            var courses = await _context.Applications
+                .Where(a => a.UserId == userId && a.Status == "Approved")
+                .Select(a => a.Course)
+                .ToListAsync();
+
+            var model = new ProfileViewModel
+            {
+                FullName = User.Identity.Name,
+                Email = User.FindFirstValue(ClaimTypes.Email),
+                Phone = User.FindFirstValue(ClaimTypes.MobilePhone),
+                Courses = courses
+            };
+
+            return View(model);
         }
+
 
         public IActionResult Register()
         {

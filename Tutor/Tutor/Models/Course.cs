@@ -33,5 +33,7 @@ namespace Tutor.Models
         public string? ImagePath { get; set; }
 
         public ICollection<Application> Applications { get; set; } = new List<Application>();
+        public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
+
     }
 }

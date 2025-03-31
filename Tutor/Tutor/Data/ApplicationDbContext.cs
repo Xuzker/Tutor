@@ -14,6 +14,7 @@ namespace Tutor.Data
         public DbSet<Application> Applications { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<VisitLog> VisitLogs { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

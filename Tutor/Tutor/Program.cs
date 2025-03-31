@@ -8,6 +8,7 @@ using Tutor.Models;
 using Tutor.Email;
 using Tutor.VisitService;
 using Org.BouncyCastle.Pqc.Crypto.Lms;
+using Tutor.Kafka;
 
 //docker - compose down
 //docker system prune -a
@@ -21,6 +22,8 @@ namespace Tutor
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -38,6 +41,10 @@ namespace Tutor
 
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
             builder.Services.AddTransient<Tutor.Email.IEmailSender, EmailSender>();
+
+            // Регистрация Kafka Producer
+            builder.Services.AddSingleton<IKafkaProducer>(sp =>
+                new KafkaProducer(builder.Configuration["Kafka:BootstrapServers"]));
 
             var app = builder.Build();
 

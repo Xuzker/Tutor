@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ProfileViewModel
+
+@{
     ViewData["Title"] = "Профиль";
 }
 
@@ -10,53 +12,55 @@
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-6 shadow sm:rounded-lg sm:px-10">
             <form method="post" action="/Account/UpdateProfile" class="space-y-6">
-
-                <!-- Поле для имени -->
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">Имя</label>
-                    <div class="mt-1">
-                        <input type="text" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" id="name" name="name" value="@User.Identity.Name" required>
-                    </div>
+                    <label class="block text-sm font-medium text-gray-700">Имя</label>
+                    <input type="text" class="w-full border px-3 py-2" value="@Model.FullName" readonly>
                 </div>
 
-                <!-- Поле для email -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                    <div class="mt-1">
-                        <input type="email" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" id="email" name="email" required>
-                    </div>
+                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" class="w-full border px-3 py-2" value="@Model.Email" readonly>
                 </div>
 
-                <!-- Поле для телефона -->
                 <div>
-                    <label for="phone" class="block text-sm font-medium text-gray-700">Телефон</label>
-                    <div class="mt-1">
-                        <input type="text" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" id="phone" name="phone" required>
-                    </div>
-                </div>
-
-                <!-- Поле для нового пароля -->
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Новый пароль</label>
-                    <div class="mt-1">
-                        <input type="password" class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" id="password" name="password">
-                    </div>
-                </div>
-
-                <!-- Кнопка для сохранения изменений -->
-                <div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                        Сохранить изменения
-                    </button>
+                    <label class="block text-sm font-medium text-gray-700">Телефон</label>
+                    <input type="text" class="w-full border px-3 py-2" value="@Model.Phone" readonly>
                 </div>
             </form>
+        </div>
 
-            <!-- Кнопка выхода -->
-            <div class="mt-6 text-center">
-                <a href="/Account/Logout" class="text-sm font-medium text-red-600 hover:text-red-500">
-                    Выход
-                </a>
-            </div>
+        <!-- Курсы, на которые пользователь записан -->
+        <div class="mt-6 bg-white py-8 px-6 shadow sm:rounded-lg sm:px-10">
+            <h2 class="text-xl font-semibold mb-4">Ваши курсы</h2>
+
+            @if (Model.Courses.Any())
+            {
+                <ul class="space-y-4">
+                    @foreach (var course in Model.Courses)
+                    {
+                        <li class="border p-4 rounded-lg shadow">
+                            <h3 class="text-lg font-semibold">@course.Name</h3>
+                            <p>@course.Description</p>
+                            <p class="text-sm text-gray-600">Начало: @course.StartDate.ToString("dd.MM.yyyy")</p>
+
+                            <a href="/Courses/Assignments/@course.Id"
+                               class="mt-2 inline-block bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+                                Перейти к заданиям
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-gray-600">Вы еще не записаны на курсы.</p>
+            }
+        </div>
+
+        <div class="mt-6 text-center">
+            <a href="/Account/Logout" class="text-red-600 hover:text-red-500">
+                Выход
+            </a>
         </div>
     </div>
 </div>

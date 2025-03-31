@@ -28,3 +28,24 @@
         </div>
     </div>
 </div>
+
+
+document.querySelector('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    try {
+        const response = await fetch('/Courses/Enroll', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            window.location.href = '/Notifications/Index';
+        } else {
+            alert('Ошибка при отправке заявки');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
