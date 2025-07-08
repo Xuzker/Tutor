@@ -68,7 +68,7 @@ dotnet ef database update
 dotnet run
 
 🔧 Конфигурация (appsettings.json)
-
+```json
 {
   "ConnectionStrings": {
     "DefaultConnection": "Server=.;Database=Tutor;Trusted_Connection=True;"
@@ -88,7 +88,7 @@ dotnet run
     }
   }
 }
-
+```
 🔐 Аутентификация и авторизация
 
 - Локальная регистрация и вход
