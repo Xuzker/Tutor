@@ -44,8 +44,6 @@ Frontend:
 
 Базы данных и кэш:
 - PostgreSQL
-- SQL Server
-- Redis
 
 Контейнеризация и развертывание:
 - Docker и Docker Compose
